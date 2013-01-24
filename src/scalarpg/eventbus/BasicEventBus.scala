@@ -14,7 +14,7 @@ class BasicEventBus extends EventBus {
 
   def subscribe(subscriber: Object) {
 
-    val methods = subscriber.getClass.getDeclaredMethods
+    val methods = subscriber.getClass.getMethods()
     methods.foreach(m => {
 
       val eventHandler = m.getAnnotation(classOf[EventHandler])

@@ -24,11 +24,7 @@ class Player(world: World) extends Entity(world) {
 
   override def reachedDestination(): Boolean = {
     val res = super.reachedDestination()
-    if (res) world.updateView()
+    //if (res) world.updateView()
     res
-  }
-
-  override def tick() {
-    super.tick()
   }
 }

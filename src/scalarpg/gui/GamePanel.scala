@@ -1,12 +1,15 @@
 package scalarpg.gui
 
+import eventbus.EventHandler
 import swing._
 import event.{KeyReleased, KeyPressed}
 import java.awt.Color
 import scalarpg.util.KeyHandler
-import scalarpg.traits.RepaintListener
+import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
+import scalarpg.eventbus.EventBusService
+import scalarpg.traits.TickListener
 
-class GamePanel(repaintListener: RepaintListener) extends Panel {
+class GamePanel extends Panel with TickListener {
 
   preferredSize = new Dimension(800, 800)
   background = Color.white
@@ -17,8 +20,13 @@ class GamePanel(repaintListener: RepaintListener) extends Panel {
     case e:KeyReleased => KeyHandler.onKeyReleased(e)
   }
 
-  override protected def paintComponent(g: Graphics2D) {
-    super.paintComponent(g)
-    repaintListener.onRepaint(g)
+  @EventHandler
+  def tick(event: TickEvent) {
+    repaint()
+  }
+
+  override def paint(g: Graphics2D) {
+    super.paint(g)
+    EventBusService.publish((RepaintEvent(this, g)))
   }
 }

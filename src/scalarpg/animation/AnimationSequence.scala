@@ -1,10 +1,9 @@
 package scalarpg.animation
 
-import scalarpg.traits.Tickable
 import scalarpg.util.{TickCounter, Direction}
 import collection.immutable.HashMap
 
-class AnimationSequence(sprite: Sprite, frameIndices: HashMap[Direction.Value, Array[Int]], delay: Int) extends Tickable {
+class AnimationSequence(sprite: Sprite, frameIndices: HashMap[Direction.Value, Array[Int]], delay: Int) {
 
   val counter = new TickCounter()
   var index = frameIndices(Direction.Down)(0)

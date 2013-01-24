@@ -1,21 +1,20 @@
 package scalarpg
 
-import _root_.eventbus.BasicEventBus
+import _root_.eventbus.EventHandler
+import eventbus.event.TickEvent
+import eventbus.EventBusService
 import gui.{IntroPanel, GamePanel}
 import swing._
-import traits.RepaintListener
 import world.World
 
-object ScalaRPG extends RepaintListener {
-
-  val eventBus = new BasicEventBus()
+object ScalaRPG {
 
   val world = new World()
 
   var isRunning = false
-  val gameTimer = new javax.swing.Timer(20, Swing.ActionListener(f => { tick() }))
+  val gameTimer = new javax.swing.Timer(20, Swing.ActionListener(e => EventBusService.publish(TickEvent())))
 
-  val gamePanel = new GamePanel(this)
+  val gamePanel = new GamePanel()
   val introPanel = new IntroPanel()
   val frame = new MainFrame {
     title = "ScalaRPG"
@@ -23,20 +22,13 @@ object ScalaRPG extends RepaintListener {
     centerOnScreen()
   }
 
-  def tick() {
+  @EventHandler
+  def onTick(event: TickEvent) {
 
     if (!isRunning) {
       gameTimer.stop()
       return
     }
-
-    world.tick()
-    gamePanel.repaint()
-
-  }
-
-  def onRepaint(g: Graphics2D) {
-    world.paint(g)
   }
 
   def start() {
@@ -48,6 +40,9 @@ object ScalaRPG extends RepaintListener {
   }
 
   def main(args: Array[String]) {
+
+    EventBusService.subscribe(this)
+    EventBusService.subscribe(gamePanel)
 
     frame.open()
     introPanel.requestFocus()

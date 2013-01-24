@@ -1,13 +1,15 @@
 package scalarpg.entity
 
-import java.awt.{Graphics2D, Point}
+import eventbus.EventHandler
+import java.awt.Point
 import scalarpg.util.{TickCounter, Direction}
-import scalarpg.traits.{Paintable, Tickable}
+import scalarpg.traits.{PaintListener, TickListener}
 import collection.immutable.HashMap
 import scalarpg.animation.{AnimationSequence, Sprite}
 import scalarpg.world.World
+import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 
-abstract class Entity(world: World) extends Tickable with Paintable {
+abstract class Entity(world: World) extends TickListener with PaintListener {
 
   val position = new Point()
   var prevPosition = new Point()
@@ -42,9 +44,9 @@ abstract class Entity(world: World) extends Tickable with Paintable {
 
       direction match {
         case Direction.Up => if (getTilePosition().y <= 0) return
-        case Direction.Down => if (getTilePosition().y >= world.SIZE) return
+        case Direction.Down => if (getTilePosition().y >= 0) return
         case Direction.Left => if (getTilePosition().x <= 0) return
-        case Direction.Right => if (getTilePosition().x >= world.SIZE) return
+        case Direction.Right => if (getTilePosition().x >= 0) return
       }
 
       prevPosition = new Point(position.x, position.y)
@@ -89,7 +91,13 @@ abstract class Entity(world: World) extends Tickable with Paintable {
     counter.tick()
   }
 
-  def paint(g: Graphics2D) {
-    g.drawImage(sprite(spriteIndex), position.x, position.y, null)
+  @EventHandler
+  def tick(event: TickEvent) {
+
+  }
+
+  @EventHandler
+  def paint(event: RepaintEvent) {
+    event.graphics.drawImage(sprite(spriteIndex), position.x, position.y, null)
   }
 }
