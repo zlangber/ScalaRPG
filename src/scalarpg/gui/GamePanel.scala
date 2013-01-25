@@ -4,7 +4,6 @@ import eventbus.EventHandler
 import swing._
 import event.{KeyReleased, KeyPressed}
 import java.awt.Color
-import scalarpg.util.KeyHandler
 import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 import scalarpg.eventbus.EventBusService
 import scalarpg.traits.TickListener
@@ -18,8 +17,8 @@ class GamePanel extends Panel with TickListener {
 
   listenTo(keys)
   reactions += {
-    case e:KeyPressed => KeyHandler.onKeyPressed(e)
-    case e:KeyReleased => KeyHandler.onKeyReleased(e)
+    case e:KeyPressed => EventBusService.publish(e)
+    case e:KeyReleased => EventBusService.publish(e)
   }
 
   @EventHandler

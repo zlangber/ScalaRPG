@@ -13,9 +13,8 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
   val position = new Point()
   var direction = Direction.None
 
-  println("in super")
   var sprite = SpriteCache("missing")
-  lazy val animationState = new AnimationState(sprite, null, 0)
+  lazy val animationState = new AnimationState(this, 2)
 
   def move(direction: Direction.Value) {
 
@@ -28,6 +27,6 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
 
   @EventHandler
   def paint(event: RepaintEvent) {
-    event.graphics.drawImage(sprite(0), position.x, position.y, null)
+    event.graphics.drawImage(animationState.currentFrame(), position.x, position.y, null)
   }
 }

@@ -19,7 +19,7 @@ class World {
 
     (xml \ "chunk").toArray.zipWithIndex.foreach( data => {
 
-      chunks(data._2) = new Chunk(this, data._2)
+      chunks(data._2) = new Chunk(this, index = data._2)
       chunks(data._2).defaultTexture = (data._1 \ "defaults" \ "@texture").text.toInt
     })
 

@@ -13,4 +13,8 @@ class Sprite(name: String) {
   def apply(index: Int):BufferedImage = {
     images(index)
   }
+
+  override def toString():String = {
+    name
+  }
 }
