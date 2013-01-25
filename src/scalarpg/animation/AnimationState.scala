@@ -3,10 +3,12 @@ package scalarpg.animation
 import scalarpg.util.{TickCounter, Direction}
 import collection.immutable.HashMap
 
-class AnimationSequence(sprite: Sprite, frameIndices: HashMap[Direction.Value, Array[Int]], delay: Int) {
+class AnimationState(sprite: Sprite, frameIndices: HashMap[Direction.Value, Array[Int]], delay: Int) {
+
+  println(sprite)
 
   val counter = new TickCounter()
-  var index = frameIndices(Direction.Down)(0)
+  var index = 0
 
   def tick() {
 

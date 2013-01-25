@@ -8,6 +8,7 @@ import scalarpg.eventbus.EventBusService
 class World {
 
   val chunks = new Array[Chunk](4)
+  val currentChunkIndex = 0
 
   val player = new Player(this)
 
@@ -17,14 +18,11 @@ class World {
     val xml = XML.loadFile(file)
 
     (xml \ "chunk").toArray.zipWithIndex.foreach( data => {
-      val defaultTexture = (data._1 \ "defaults" \ "@texture").text.toInt
-      chunks(data._2) = new Chunk(defaultTexture)
+
+      chunks(data._2) = new Chunk(this, data._2)
+      chunks(data._2).defaultTexture = (data._1 \ "defaults" \ "@texture").text.toInt
     })
 
-    subscribe()
-  }
-
-  def subscribe() {
     chunks.foreach(EventBusService.subscribe(_))
     EventBusService.subscribe(player)
   }
