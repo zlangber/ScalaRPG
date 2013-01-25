@@ -12,7 +12,7 @@ object ScalaRPG {
   val world = new World()
 
   var isRunning = false
-  val gameTimer = new javax.swing.Timer(20, Swing.ActionListener(e => EventBusService.publish(TickEvent())))
+  val gameTimer = new javax.swing.Timer(50, Swing.ActionListener(e => EventBusService.publish(TickEvent())))
 
   val gamePanel = new GamePanel()
   val introPanel = new IntroPanel()
@@ -34,15 +34,17 @@ object ScalaRPG {
   def start() {
 
     isRunning = true
+
     frame.contents = gamePanel
     gamePanel.requestFocus()
     gameTimer.start()
+
+    world.load("level0.xml")
   }
 
   def main(args: Array[String]) {
 
     EventBusService.subscribe(this)
-    EventBusService.subscribe(gamePanel)
 
     frame.open()
     introPanel.requestFocus()

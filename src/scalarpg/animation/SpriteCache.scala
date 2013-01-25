@@ -5,9 +5,9 @@ import collection.immutable.HashMap
 object SpriteCache {
 
   private val cache = HashMap(
-    "missing.png" -> new Sprite("missing.png"),
-    "player.png" -> new Sprite("player.png"),
-    "world.png" -> new Sprite("world.png")
+    "missing" -> new Sprite("missing.png"),
+    "player" -> new Sprite("player.png"),
+    "world" -> new Sprite("world.png")
   )
 
   def apply(name:String):Sprite = {

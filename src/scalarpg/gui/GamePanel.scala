@@ -11,6 +11,8 @@ import scalarpg.traits.TickListener
 
 class GamePanel extends Panel with TickListener {
 
+  EventBusService.subscribe(this)
+
   preferredSize = new Dimension(800, 800)
   background = Color.white
 
