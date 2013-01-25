@@ -14,16 +14,16 @@ class Player(world: World) extends Entity(world) {
   def keyPress(event: KeyPressed) {
 
     event.key match {
-      case Key.Down => animationState.start(Direction.Down)
-      case Key.Left => animationState.start(Direction.Left)
-      case Key.Right => animationState.start(Direction.Right)
-      case Key.Up => animationState.start(Direction.Up)
+      case Key.Down => move(Direction.Down)
+      case Key.Left => move(Direction.Left)
+      case Key.Right => move(Direction.Right)
+      case Key.Up => move(Direction.Up)
       case _ =>
     }
   }
 
   @EventHandler
   def keyReleased(event: KeyReleased) {
-    println(event)
+
   }
 }
