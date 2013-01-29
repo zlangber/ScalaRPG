@@ -6,8 +6,9 @@ object SpriteCache {
 
   private val cache = HashMap(
     "missing" -> new Sprite("missing.png"),
-    "player" -> new Sprite("player.png"),
-    "world" -> new Sprite("world.png")
+    "player" -> new Sprite("player2.png"),
+    "world" -> new Sprite("world.png"),
+    "structure" -> new Sprite("structure.png")
   )
 
   def apply(name:String):Sprite = {

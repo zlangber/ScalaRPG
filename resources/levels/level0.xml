@@ -1,6 +1,20 @@
 <level>
     <chunk>
         <defaults texture="1"/>
+        <tiles>
+            <tile x="4" y="4">
+                <layer sheet="structure" texture="0" solid="true"/>
+            </tile>
+            <tile x="5" y="4">
+                <layer sheet="structure" texture="1" solid="true"/>
+            </tile>
+            <tile x="4" y="5">
+                <layer sheet="structure" texture="2" solid="true"/>
+            </tile>
+            <tile x="5" y="5">
+                <layer sheet="structure" texture="3" solid="true"/>
+            </tile>
+        </tiles>
     </chunk>
     <chunk>
         <defaults texture="1"/>

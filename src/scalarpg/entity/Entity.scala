@@ -12,9 +12,9 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
 
   var dead = false
 
-  val position = new Point()
+  val position = new Point(0, 0)
 
-  var moveSpeed = 2
+  var moveSpeed = 4
   var moving = false
   var direction = Direction.None
   val moveCounter = new TickCounter()
@@ -22,7 +22,32 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
   var sprite = SpriteCache("missing")
   lazy val animationState = new AnimationState(this, 2)
 
+  def canMoveTo(pos: Point):Boolean = {
+
+    if (pos.x < 0 || pos.x > 25 * 32 || pos.y < 0 || pos.y > 25 * 32) false
+
+    val chunk = world.activeChunk
+    if (chunk.getTileAt(pos.x, pos.y).solid) false
+    else true
+  }
+
+  def getPositionToward(direction : Direction.Value):Point = {
+
+    var x = position.x
+    var y = position.y
+    direction match {
+      case Direction.Down => y += 32
+      case Direction.Left => x -= 32
+      case Direction.Right => x += 32
+      case Direction.Up => y -= 32
+    }
+
+    new Point(x, y)
+  }
+
   def move(direction: Direction.Value) {
+
+    if (!canMoveTo(getPositionToward(direction))) return
 
     if (moving) return
 
@@ -43,7 +68,7 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
 
     if (moving) {
 
-      if (moveCounter.count() >= 32 / moveSpeed) {
+      if (moveCounter.count() > 32 / moveSpeed) {
         stop()
         moveCounter.reset()
       }
