@@ -26,13 +26,89 @@
             <tile x="8" y="6">
                 <layer sheet="structure" texture="7" solid="true"/>
             </tile>
+            <tile x="2" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="3" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="4" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="5" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="6" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="7" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="8" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="9" y="10">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="2" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="3" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="4" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="5" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="6" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="7" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="8" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
+            <tile x="9" y="11">
+                <layer sheet="world" texture="2" solid="false"/>
+            </tile>
         </tiles>
     </chunk>
     <chunk>
         <defaults texture="1"/>
+        <tiles>
+            <tile x="4" y="12">
+                <layer sheet="structure" texture="16" solid="true"/>
+            </tile>
+            <tile x="5" y="12">
+                <layer sheet="structure" texture="17" solid="true"/>
+            </tile>
+            <tile x="4" y="13">
+                <layer sheet="structure" texture="18" solid="true"/>
+            </tile>
+            <tile x="5" y="13">
+                <layer sheet="structure" texture="19" solid="true"/>
+            </tile>
+        </tiles>
     </chunk>
     <chunk>
         <defaults texture="1"/>
+        <tiles>
+            <tile x="12" y="12">
+                <layer sheet="structure" texture="8" solid="true"/>
+            </tile>
+            <tile x="13" y="12">
+                <layer sheet="structure" texture="9" solid="true"/>
+            </tile>
+            <tile x="12" y="13">
+                <layer sheet="structure" texture="10" solid="true"/>
+            </tile>
+            <tile x="13" y="13">
+                <layer sheet="structure" texture="11" solid="true"/>
+            </tile>
+        </tiles>
     </chunk>
     <chunk>
         <defaults texture="1"/>

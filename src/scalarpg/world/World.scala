@@ -55,10 +55,10 @@ class World {
 
           val sheet = (layerXML \ "@sheet").text
           val layerTexture = (layerXML \ "@texture").text.toInt
-          val isSolid = (layerXML \ "@solid").text.toBoolean
+          val solid = (layerXML \ "@solid").text
 
           tile.layers += SpriteCache(sheet)(layerTexture)
-          tile.solid = isSolid
+          tile.solid = if (!solid.isEmpty) solid.toBoolean else false
         })
       })
 
