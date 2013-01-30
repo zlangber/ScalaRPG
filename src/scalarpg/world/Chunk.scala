@@ -7,7 +7,7 @@ import scalarpg.animation.SpriteCache
 
 class Chunk(world: World, val index:Int) extends TickListener with RepaintListener {
 
-  private lazy val tiles = Array.tabulate(25, 25)((x, y) => new Tile(this, x * 32, y * 32, defaultTexture))
+  private lazy val tiles = Array.tabulate(16, 16)((x, y) => new Tile(this, x * 32, y * 32, defaultTexture))
 
   val sprite = SpriteCache("world")
   var defaultTexture = 0

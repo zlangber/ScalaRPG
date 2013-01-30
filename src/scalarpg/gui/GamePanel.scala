@@ -12,7 +12,7 @@ class GamePanel extends Panel with TickListener {
 
   EventBusService.subscribe(this)
 
-  preferredSize = new Dimension(800, 800)
+  preferredSize = new Dimension(512, 512)
   background = Color.white
 
   listenTo(keys)

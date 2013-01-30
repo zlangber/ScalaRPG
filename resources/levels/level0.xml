@@ -14,6 +14,18 @@
             <tile x="5" y="5">
                 <layer sheet="structure" texture="3" solid="true"/>
             </tile>
+            <tile x="7" y="5">
+                <layer sheet="structure" texture="4" solid="true"/>
+            </tile>
+            <tile x="8" y="5">
+                <layer sheet="structure" texture="5" solid="true"/>
+            </tile>
+            <tile x="7" y="6">
+                <layer sheet="structure" texture="6" solid="true"/>
+            </tile>
+            <tile x="8" y="6">
+                <layer sheet="structure" texture="7" solid="true"/>
+            </tile>
         </tiles>
     </chunk>
     <chunk>

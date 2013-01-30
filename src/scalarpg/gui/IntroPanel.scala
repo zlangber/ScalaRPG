@@ -8,7 +8,7 @@ import scalarpg.ScalaRPG
 class IntroPanel extends Panel {
 
   background = Color.black
-  preferredSize = new Dimension(800, 800)
+  preferredSize = new Dimension(512, 512)
   listenTo(keys)
   reactions += {
     case e:KeyPressed => ScalaRPG.start()

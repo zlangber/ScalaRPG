@@ -15,9 +15,9 @@ class Player(world: World) extends Entity(world) {
 
     direction match {
       case Direction.Down => position.y = 0
-      case Direction.Left => position.x = 24 * 32
+      case Direction.Left => position.x = 15 * 32
       case Direction.Right => position.x = 0
-      case Direction.Up => position.y = 24 * 32
+      case Direction.Up => position.y = 15 * 32
     }
   }
 
@@ -30,7 +30,7 @@ class Player(world: World) extends Entity(world) {
         world.activeChunk = chunk.get
       }
       false
-    } else if (pos.x >= 25 * 32) {
+    } else if (pos.x >= 16 * 32) {
       val chunk = world.getChunkTowards(Direction.Right)
       if (chunk.isDefined) {
         repositionPlayer(Direction.Right)
@@ -44,7 +44,7 @@ class Player(world: World) extends Entity(world) {
         world.activeChunk = chunk.get
       }
       false
-    } else if (pos.y >= 25 * 32) {
+    } else if (pos.y >= 16 * 32) {
       val chunk = world.getChunkTowards(Direction.Down)
       if (chunk.isDefined) {
         repositionPlayer(Direction.Down)

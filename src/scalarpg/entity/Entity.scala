@@ -24,7 +24,7 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
 
   def canMoveTo(pos: Point):Boolean = {
 
-    if (pos.x < 0 || pos.x > 25 * 32 || pos.y < 0 || pos.y > 25 * 32) false
+    if (pos.x < 0 || pos.x > 16 * 32 || pos.y < 0 || pos.y > 16 * 32) false
 
     val chunk = world.activeChunk
     if (chunk.getTileAt(pos.x, pos.y).solid) false
