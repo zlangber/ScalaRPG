@@ -12,20 +12,26 @@ import scalarpg.eventbus.event.TickEvent
 class AnimationState(entity: Entity, delay: Int) extends TickListener {
 
   var isAnimating = false
-  private var index = 0
-  private var direction = Direction.Down
-  private val frameIndices = HashMap(
-    Direction.Down -> Array(0, 1, 2),
-    Direction.Left -> Array(8, 9, 10),
-    Direction.Right -> Array(16, 17, 18),
-    Direction.Up -> Array(24, 25, 26)
-  )
   val counter = new TickCounter()
+
+  private var key = "walk"
+  private var direction = Direction.Down
+  private var index = 0
+
+  private val frameIndices = HashMap(
+    "walk" -> HashMap(
+      Direction.Down -> Array(0, 1, 2),
+      Direction.Left -> Array(8, 9, 10),
+      Direction.Right -> Array(16, 17, 18),
+      Direction.Up -> Array(24, 25, 26)
+    )
+  )
 
   EventBusService.subscribe(this)
 
-  def start(dir: Direction.Value) {
+  def start(k: String, dir: Direction.Value) {
     isAnimating = true
+    key = k
     direction = dir
   }
 
@@ -33,8 +39,14 @@ class AnimationState(entity: Entity, delay: Int) extends TickListener {
     isAnimating = false
   }
 
+  def face(dir: Direction.Value) {
+
+    direction = dir
+    index = frameIndices("walk")(dir)(0)
+  }
+
   def currentFrame():BufferedImage = {
-    entity.sprite(frameIndices(direction)(index))
+    entity.sprite(frameIndices(key)(direction)(index))
   }
 
   @EventHandler

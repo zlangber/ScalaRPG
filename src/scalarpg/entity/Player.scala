@@ -19,35 +19,23 @@ class Player(world: World) extends Entity(world) {
       case Direction.Right => position.x = 0
       case Direction.Up => position.y = 15 * 32
     }
+
+    animationState.face(direction)
   }
 
   override def canMoveTo(pos: Point): Boolean = {
 
-    if (pos.x < 0) {
-      val chunk = world.getChunkTowards(Direction.Left)
+    var direction = Direction.None
+
+    if (pos.x < 0) direction = Direction.Left
+    else if (pos.x >= 16 * 32) direction = Direction.Right
+    else if (pos.y < 0) direction = Direction.Up
+    else if (pos.y >= 16 * 32) direction = Direction.Down
+
+    if (direction != Direction.None) {
+      val chunk = world.getChunkTowards(direction)
       if (chunk.isDefined) {
-        repositionPlayer(Direction.Left)
-        world.activeChunk = chunk.get
-      }
-      false
-    } else if (pos.x >= 16 * 32) {
-      val chunk = world.getChunkTowards(Direction.Right)
-      if (chunk.isDefined) {
-        repositionPlayer(Direction.Right)
-        world.activeChunk = chunk.get
-      }
-      false
-    } else if (pos.y < 0) {
-      val chunk = world.getChunkTowards(Direction.Up)
-      if (chunk.isDefined) {
-        repositionPlayer(Direction.Up)
-        world.activeChunk = chunk.get
-      }
-      false
-    } else if (pos.y >= 16 * 32) {
-      val chunk = world.getChunkTowards(Direction.Down)
-      if (chunk.isDefined) {
-        repositionPlayer(Direction.Down)
+        repositionPlayer(direction)
         world.activeChunk = chunk.get
       }
       false

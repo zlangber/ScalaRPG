@@ -53,7 +53,7 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
 
     this.direction = direction
     moving = true
-    animationState.start(direction)
+    animationState.start("walk", direction)
   }
 
   def stop() {
