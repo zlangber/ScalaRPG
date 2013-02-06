@@ -19,8 +19,7 @@ abstract class Entity(world: World) extends TickListener with RepaintListener {
   var direction = Direction.None
   val moveCounter = new TickCounter()
 
-  var sprite = SpriteCache("missing")
-  lazy val animationState = new AnimationState(this, 2)
+  lazy val animationState = new AnimationState(SpriteCache("missing"), 2)
 
   def canMoveTo(pos: Point):Boolean = {
 

@@ -9,7 +9,7 @@ import java.awt.Point
 
 class Player(world: World) extends Entity(world) {
 
-  sprite = SpriteCache("player")
+  animationState.sprite = SpriteCache("player")
 
   def repositionPlayer(direction: Direction.Value) {
 

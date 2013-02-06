@@ -4,12 +4,11 @@ import eventbus.EventHandler
 import scalarpg.util.{TickCounter, Direction}
 import collection.immutable.HashMap
 import scalarpg.eventbus.EventBusService
-import scalarpg.entity.Entity
 import java.awt.image.BufferedImage
 import scalarpg.traits.TickListener
 import scalarpg.eventbus.event.TickEvent
 
-class AnimationState(entity: Entity, delay: Int) extends TickListener {
+class AnimationState(var sprite: Sprite, delay: Int) extends TickListener {
 
   var isAnimating = false
   val counter = new TickCounter()
@@ -42,11 +41,11 @@ class AnimationState(entity: Entity, delay: Int) extends TickListener {
   def face(dir: Direction.Value) {
 
     direction = dir
-    index = frameIndices("walk")(dir)(0)
+    index = 0
   }
 
   def currentFrame():BufferedImage = {
-    entity.sprite(frameIndices(key)(direction)(index))
+    sprite(frameIndices(key)(direction)(index))
   }
 
   @EventHandler
