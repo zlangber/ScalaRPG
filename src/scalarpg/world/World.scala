@@ -1,11 +1,13 @@
 package scalarpg.world
 
+import eventbus.EventHandler
 import scalarpg.entity.Player
 import java.io.File
 import xml.XML
 import scalarpg.eventbus.EventBusService
 import scalarpg.animation.SpriteCache
 import scalarpg.util.Direction
+import scalarpg.eventbus.event.PlayerLeftChunkEvent
 
 class World {
 
@@ -13,6 +15,17 @@ class World {
   var activeChunk:Chunk = null
 
   val player = new Player(this)
+
+  EventBusService.subscribe(this)
+
+  @EventHandler
+  def playerLeftChunk(event: PlayerLeftChunkEvent) {
+    val chunk = getChunkTowards(event.direction)
+    if (chunk.isDefined) {
+      event.source.repositionPlayer(event.direction)
+      activeChunk = chunk.get
+    }
+  }
 
   def getChunkTowards(direction: Direction.Value):Option[Chunk] = {
 

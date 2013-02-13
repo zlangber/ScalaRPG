@@ -6,6 +6,8 @@ import scalarpg.animation.SpriteCache
 import scalarpg.util.Direction
 import swing.event.{Key, KeyPressed}
 import java.awt.Point
+import scalarpg.eventbus.EventBusService
+import scalarpg.eventbus.event.PlayerLeftChunkEvent
 
 class Player(world: World) extends Entity(world) {
 
@@ -33,11 +35,7 @@ class Player(world: World) extends Entity(world) {
     else if (pos.y >= 16 * 32) direction = Direction.Down
 
     if (direction != Direction.None) {
-      val chunk = world.getChunkTowards(direction)
-      if (chunk.isDefined) {
-        repositionPlayer(direction)
-        world.activeChunk = chunk.get
-      }
+      EventBusService.publish(new PlayerLeftChunkEvent(this, direction))
       false
     } else super.canMoveTo(pos)
   }

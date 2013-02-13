@@ -19,6 +19,13 @@ object ScalaRPG {
   val frame = new MainFrame {
     title = "ScalaRPG"
     contents = introPanel
+    menuBar = new MenuBar {
+      contents += new Menu("File") {
+        contents += new MenuItem(Action("Save")())
+        contents += new MenuItem(Action("Load")())
+        contents += new MenuItem(Action("Quit")(System.exit(0)))
+      }
+    }
     centerOnScreen()
   }
 
