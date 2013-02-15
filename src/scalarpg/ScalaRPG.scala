@@ -4,10 +4,13 @@ import _root_.eventbus.EventHandler
 import eventbus.event.TickEvent
 import eventbus.EventBusService
 import gui.{IntroPanel, GamePanel}
+import net.NetworkManager
 import swing._
 import world.World
 
 object ScalaRPG {
+
+  val networkManager = new NetworkManager("localhost", 8000)
 
   val world = new World()
 
@@ -50,6 +53,11 @@ object ScalaRPG {
   }
 
   def main(args: Array[String]) {
+
+    println("Connecting to server..")
+    networkManager.connect()
+    networkManager.listen()
+    networkManager.send(args(0))
 
     EventBusService.subscribe(this)
 

@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-class Sprite(name: String) {
+class Sprite(name: String) extends Serializable {
 
   var file = new File("resources/sprites/" + name)
   var sheet = ImageIO.read(file)

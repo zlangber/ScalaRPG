@@ -8,7 +8,7 @@ import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 import scalarpg.eventbus.EventBusService
 import scalarpg.traits.TickListener
 
-class GamePanel extends Panel with TickListener {
+class GamePanel extends Panel with TickListener with Serializable {
 
   EventBusService.subscribe(this)
 

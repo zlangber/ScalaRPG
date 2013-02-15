@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage
 import scalarpg.traits.TickListener
 import scalarpg.eventbus.event.TickEvent
 
-class AnimationState(var sprite: Sprite, delay: Int) extends TickListener {
+class AnimationState(var sprite: Sprite, delay: Int) extends TickListener with Serializable {
 
   var isAnimating = false
   val counter = new TickCounter()

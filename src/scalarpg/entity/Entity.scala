@@ -8,7 +8,7 @@ import scalarpg.animation.{AnimationState, SpriteCache}
 import scalarpg.world.World
 import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 
-abstract class Entity(world: World) extends TickListener with RepaintListener {
+abstract class Entity(world: World) extends TickListener with RepaintListener with Serializable {
 
   var dead = false
 
