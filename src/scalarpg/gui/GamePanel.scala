@@ -1,14 +1,12 @@
 package scalarpg.gui
 
-import eventbus.EventHandler
 import swing._
 import event.{KeyReleased, KeyPressed}
 import java.awt.Color
 import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
-import scalarpg.eventbus.EventBusService
-import scalarpg.traits.TickListener
+import scalarpg.eventbus.{EventHandler, EventBusService}
 
-class GamePanel extends Panel with TickListener with Serializable {
+class GamePanel extends Panel {
 
   EventBusService.subscribe(this)
 

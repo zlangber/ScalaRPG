@@ -1,18 +1,17 @@
 package scalarpg.world
 
-import eventbus.EventHandler
-import scalarpg.entity.Player
 import java.io.File
 import xml.XML
-import scalarpg.eventbus.EventBusService
-import scalarpg.animation.SpriteCache
-import scalarpg.util.Direction
+import scalarpg.eventbus.{EventHandler, EventBusService}
 import scalarpg.eventbus.event.PlayerLeftChunkEvent
+import scalarpg.util.Direction
+import scalarpg.animation.SpriteCache
+import scalarpg.entity.Player
 
-class World {
+class World extends Serializable {
 
   val chunks = Array.fill(2)(new Array[Chunk](2))
-  var activeChunk:Chunk = null
+  var activeChunk: Chunk = null
 
   val player = new Player(this)
 
@@ -27,7 +26,7 @@ class World {
     }
   }
 
-  def getChunkTowards(direction: Direction.Value):Option[Chunk] = {
+  def getChunkTowards(direction: Direction.Value): Option[Chunk] = {
 
     var row = activeChunk.index / chunks.length
     var column = activeChunk.index % chunks.length
@@ -47,10 +46,10 @@ class World {
 
   def load(filename: String) {
 
-    val file = new File(s"resources/levels/$filename")
+    val file = new File("resources/levels/" + filename)
     val xml = XML.loadFile(file)
 
-    (xml \ "chunk").toArray.zipWithIndex.foreach( data => {
+    (xml \ "chunk").toArray.zipWithIndex.foreach(data => {
 
       val chunkXML = data._1
       val index = data._2

@@ -1,6 +1,6 @@
 package scalarpg.util
 
-class TickCounter {
+class TickCounter extends Serializable {
 
   private var currentTick = 0
 

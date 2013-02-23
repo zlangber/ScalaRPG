@@ -1,22 +1,21 @@
 package scalarpg.world
 
-import eventbus.EventHandler
-import scalarpg.traits.{RepaintListener, TickListener}
-import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 import scalarpg.animation.SpriteCache
+import scalarpg.eventbus.EventHandler
+import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 
-class Chunk(world: World, val index:Int) extends TickListener with RepaintListener {
+class Chunk(world: World, val index: Int) {
 
   private lazy val tiles = Array.tabulate(16, 16)((x, y) => new Tile(this, x * 32, y * 32, defaultTexture))
 
   val sprite = SpriteCache("world")
   var defaultTexture = 0
 
-  def getTile(x: Int, y: Int):Tile = {
+  def getTile(x: Int, y: Int): Tile = {
     tiles(x)(y)
   }
 
-  def getTileAt(x: Int, y: Int):Tile = {
+  def getTileAt(x: Int, y: Int): Tile = {
     getTile(x / 32, y / 32)
   }
 

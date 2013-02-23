@@ -1,14 +1,12 @@
 package scalarpg.animation
 
-import eventbus.EventHandler
-import scalarpg.util.{TickCounter, Direction}
 import collection.immutable.HashMap
-import scalarpg.eventbus.EventBusService
 import java.awt.image.BufferedImage
-import scalarpg.traits.TickListener
+import scalarpg.util.{TickCounter, Direction}
+import scalarpg.eventbus.{EventHandler, EventBusService}
 import scalarpg.eventbus.event.TickEvent
 
-class AnimationState(var sprite: Sprite, delay: Int) extends TickListener with Serializable {
+class AnimationState(var sprite: Sprite, delay: Int) extends Serializable {
 
   var isAnimating = false
   val counter = new TickCounter()

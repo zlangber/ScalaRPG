@@ -1,4 +1,4 @@
-package eventbus
+package scalarpg.eventbus
 
 import java.lang.reflect.Method
 import ref.WeakReference

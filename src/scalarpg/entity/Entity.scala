@@ -1,14 +1,13 @@
 package scalarpg.entity
 
-import eventbus.EventHandler
 import java.awt.Point
 import scalarpg.util.{TickCounter, Direction}
-import scalarpg.traits.{RepaintListener, TickListener}
 import scalarpg.animation.{AnimationState, SpriteCache}
 import scalarpg.world.World
 import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
+import scalarpg.eventbus.{EventBusService, EventHandler}
 
-abstract class Entity(world: World) extends TickListener with RepaintListener with Serializable {
+abstract class Entity(world: World) extends Serializable {
 
   var dead = false
 

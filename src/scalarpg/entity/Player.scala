@@ -1,12 +1,11 @@
 package scalarpg.entity
 
-import eventbus.EventHandler
 import scalarpg.world.World
 import scalarpg.animation.SpriteCache
 import scalarpg.util.Direction
 import swing.event.{Key, KeyPressed}
 import java.awt.Point
-import scalarpg.eventbus.EventBusService
+import scalarpg.eventbus.{EventHandler, EventBusService}
 import scalarpg.eventbus.event.PlayerLeftChunkEvent
 
 class Player(world: World) extends Entity(world) {
