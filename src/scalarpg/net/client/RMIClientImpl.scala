@@ -1,11 +1,12 @@
-package scalarpg.client
+package scalarpg.net.client
 
 import java.rmi.server.UnicastRemoteObject
 import scalarpg.Client
+import scalarpg.entity.Player
 import scalarpg.eventbus.event.Event
-import scalarpg.server.RMIServer
+import scalarpg.net.server.RMIServer
 
-class RMIClientImpl(val username: String, server: RMIServer) extends UnicastRemoteObject with RMIClient {
+class RMIClientImpl(val player: Player, server: RMIServer) extends UnicastRemoteObject with RMIClient {
 
   def connect() {
 
@@ -18,7 +19,8 @@ class RMIClientImpl(val username: String, server: RMIServer) extends UnicastRemo
     println("Connected to server.")
     println("Loading world...")
 
-    Client.start()
+    val worldData = server.worldData
+    Client.start(worldData)
   }
 
   def disconnect() {

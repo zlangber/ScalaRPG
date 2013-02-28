@@ -1,8 +1,7 @@
-package scalarpg.server
+package scalarpg.net.server
 
-import scalarpg.client.RMIClient
 import scalarpg.eventbus.event.Event
-import scalarpg.world.World
+import scalarpg.net.client.RMIClient
 
 @remote
 trait RMIServer {
@@ -10,6 +9,6 @@ trait RMIServer {
   def connect(client: RMIClient):Boolean
   def disconnect(client: RMIClient)
   def sendEvent(client: RMIClient, event: Event[Any])
-  def getPlayerList():Seq[String]
-  def getWorld():World
+  def playerList:Seq[String]
+  def worldData:xml.Node
 }

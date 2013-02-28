@@ -6,6 +6,7 @@ import scalarpg.Client
 import swing._
 
 class GameFrame(p: Panel) extends MainFrame {
+
   title = "ScalaRPG"
   contents = p
   menuBar = new MenuBar {

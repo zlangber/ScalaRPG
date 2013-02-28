@@ -6,9 +6,9 @@ import scalarpg.util.Direction
 import swing.event.{Key, KeyPressed}
 import java.awt.Point
 import scalarpg.eventbus.{EventHandler, EventBusService}
-import scalarpg.eventbus.event.PlayerLeftChunkEvent
+import scalarpg.eventbus.event.{RepaintEvent, PlayerLeftChunkEvent}
 
-class Player(world: World) extends Entity(world) {
+class Player(world: World, val username: String) extends Entity(world) {
 
   animationState.sprite = SpriteCache("player")
 
@@ -49,5 +49,11 @@ class Player(world: World) extends Entity(world) {
       case Key.Up => move(Direction.Up)
       case _ =>
     }
+  }
+
+  @EventHandler
+  override def paint(event: RepaintEvent) {
+    super.paint(event)
+    event.graphics.drawString(username, position.x, position.y - 5)
   }
 }

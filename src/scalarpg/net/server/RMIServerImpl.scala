@@ -1,9 +1,11 @@
-package scalarpg.server
+package scalarpg.net.server
 
-import java.rmi.server.UnicastRemoteObject
-import scalarpg.client.RMIClient
 import collection.mutable
+import java.io.File
+import java.rmi.server.UnicastRemoteObject
+import scala.xml.XML
 import scalarpg.eventbus.event.Event
+import scalarpg.net.client.RMIClient
 import scalarpg.world.World
 
 class RMIServerImpl extends UnicastRemoteObject with RMIServer {
@@ -12,15 +14,16 @@ class RMIServerImpl extends UnicastRemoteObject with RMIServer {
 
   val world = new World()
 
-  def connect(client: RMIClient):Boolean = {
+  def connect(client: RMIClient): Boolean = {
 
-    if (clients.filter(_.username == client.username).length > 0) {
+    if (clients.filter(_.player.username == client.player.username).length > 0) {
       println("Rejected connection from " + client)
       return false
     }
 
-    println("Accepted connection from " + client.username)
+    println("Accepted connection from " + client.player.username)
     clients += client
+    world.players += client.player
     true
   }
 
@@ -28,20 +31,21 @@ class RMIServerImpl extends UnicastRemoteObject with RMIServer {
 
     if (!clients.contains(client)) return
 
-    println("Client " + client.username + " disconnected")
+    println(client.player.username + " disconnected")
     clients -= client
   }
 
   def sendEvent(client: RMIClient, e: Event[Any]) {
-    clients.filter(_ != client).foreach(_.handleEvent(e))
+    clients.view.filter(_ != client).foreach(_.handleEvent(e))
   }
 
 
-  def getPlayerList(): Seq[String] = {
-    clients.map(_.username)
+  def playerList: Seq[String] = {
+    clients.map(_.player.username)
   }
 
-  def getWorld():World = {
-    new World
+  def worldData: xml.Node = {
+    val file = new File("resources/levels/level0.xml")
+    XML.loadFile(file)
   }
 }

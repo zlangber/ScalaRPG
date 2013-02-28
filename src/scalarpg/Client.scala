@@ -10,6 +10,7 @@ import scalarpg.eventbus.event.TickEvent
 import scalarpg.gui.{GameFrame, GamePanel, IntroPanel}
 import scalarpg.server.RMIServer
 import scalarpg.world.World
+import scalarpg.entity.Player
 
 object Client {
 
@@ -27,10 +28,10 @@ object Client {
     frame.contents = introPanel
   }
 
-  def start() {
+  def start(worldData: xml.Node) {
     frame.contents = gamePanel
     gamePanel.requestFocus()
-    world.load("level0.xml")
+    world.load(worldData)
     timer.start()
   }
 
@@ -39,7 +40,7 @@ object Client {
     try {
       Naming.lookup("rmi://" + host + "/ScalaRPGServer") match {
         case server: RMIServer =>
-          rmiClient = new RMIClientImpl(username, server)
+          rmiClient = new RMIClientImpl(new Player(world, username), server)
           rmiClient.connect()
         case _ => println("Could not connect to server at " + host)
       }

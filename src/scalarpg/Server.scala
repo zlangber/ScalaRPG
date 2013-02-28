@@ -2,7 +2,7 @@ package scalarpg
 
 import java.rmi.Naming
 import java.rmi.registry.LocateRegistry
-import scalarpg.server.RMIServerImpl
+import scalarpg.net.server.RMIServerImpl
 
 object Server {
 
@@ -13,7 +13,7 @@ object Server {
   def handleCommand(cmd: String) {
 
     cmd match {
-      case "players" => println("Players:"); server.getPlayerList().foreach(p => println("\t" + p))
+      case "players" => println("Players:"); server.playerList.foreach(p => println("\t" + p))
       case "uptime" => println(((System.nanoTime - startTime) / 1e9).toInt + "s")
       case "exit" => sys.exit()
       case _ => println("Unknown command")
