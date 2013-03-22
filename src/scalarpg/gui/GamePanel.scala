@@ -1,10 +1,11 @@
 package scalarpg.gui
 
-import swing._
-import event.{KeyReleased, KeyPressed}
-import java.awt.Color
-import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
+import java.awt.{Graphics2D, Dimension, Color}
+import scala.swing.Panel
+import scala.swing.event.{KeyReleased, KeyPressed}
+import scalarpg.eventbus.event.{KeyEvent, RepaintEvent, TickEvent}
 import scalarpg.eventbus.{EventHandler, EventBusService}
+import scalarpg.Client
 
 class GamePanel extends Panel {
 
@@ -15,8 +16,7 @@ class GamePanel extends Panel {
 
   listenTo(keys)
   reactions += {
-    case e:KeyPressed => EventBusService.publish(e)
-    case e:KeyReleased => EventBusService.publish(e)
+    case e:KeyPressed => Client.rmiClient.server.handleEvent(new KeyEvent(Client.rmiClient, e.key, e.modifiers))
   }
 
   @EventHandler
@@ -26,6 +26,6 @@ class GamePanel extends Panel {
 
   override def paint(g: Graphics2D) {
     super.paint(g)
-    EventBusService.publish((RepaintEvent(this, g)))
+    EventBusService.publish((new RepaintEvent(this, g)))
   }
 }

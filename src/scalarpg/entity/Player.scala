@@ -1,16 +1,14 @@
 package scalarpg.entity
 
-import scalarpg.world.World
-import scalarpg.animation.SpriteCache
+import java.awt.Point
+import scalarpg.eventbus.EventHandler
+import scalarpg.eventbus.event.RepaintEvent
 import scalarpg.util.Direction
 import swing.event.{Key, KeyPressed}
-import java.awt.Point
-import scalarpg.eventbus.{EventHandler, EventBusService}
-import scalarpg.eventbus.event.{RepaintEvent, PlayerLeftChunkEvent}
 
-class Player(world: World, val username: String) extends Entity(world) {
+class Player(val username: String) extends Entity {
 
-  animationState.sprite = SpriteCache("player")
+  animationState.spriteKey = "player"
 
   def repositionPlayer(direction: Direction.Value) {
 
@@ -34,21 +32,9 @@ class Player(world: World, val username: String) extends Entity(world) {
     else if (pos.y >= 16 * 32) direction = Direction.Down
 
     if (direction != Direction.None) {
-      EventBusService.publish(new PlayerLeftChunkEvent(this, direction))
+      //EventBusService.publish(new PlayerLeftChunkEvent(this, direction))
       false
     } else super.canMoveTo(pos)
-  }
-
-  @EventHandler
-  def keyPress(event: KeyPressed) {
-
-    event.key match {
-      case Key.Down => move(Direction.Down)
-      case Key.Left => move(Direction.Left)
-      case Key.Right => move(Direction.Right)
-      case Key.Up => move(Direction.Up)
-      case _ =>
-    }
   }
 
   @EventHandler

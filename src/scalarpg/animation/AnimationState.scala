@@ -6,7 +6,7 @@ import scalarpg.util.{TickCounter, Direction}
 import scalarpg.eventbus.{EventHandler, EventBusService}
 import scalarpg.eventbus.event.TickEvent
 
-class AnimationState(var sprite: Sprite, delay: Int) extends Serializable {
+class AnimationState(var spriteKey: String, delay: Int) extends Serializable {
 
   var isAnimating = false
   val counter = new TickCounter()
@@ -42,8 +42,8 @@ class AnimationState(var sprite: Sprite, delay: Int) extends Serializable {
     index = 0
   }
 
-  def currentFrame():BufferedImage = {
-    sprite(frameIndices(key)(direction)(index))
+  def currentFrame:BufferedImage = {
+    SpriteCache(spriteKey)(frameIndices(key)(direction)(index))
   }
 
   @EventHandler

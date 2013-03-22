@@ -1,14 +1,16 @@
 package scalarpg.world
 
-import scalarpg.animation.SpriteCache
+import scala.collection.mutable
+import scalarpg.entity.Entity
 import scalarpg.eventbus.EventHandler
 import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 
-class Chunk(world: World, val index: Int) {
+class Chunk(val index: Int) extends Serializable {
 
   private lazy val tiles = Array.tabulate(16, 16)((x, y) => new Tile(this, x * 32, y * 32, defaultTexture))
+  var entities = mutable.Buffer[Entity]()
 
-  val sprite = SpriteCache("world")
+  val spriteKey = "world"
   var defaultTexture = 0
 
   def getTile(x: Int, y: Int): Tile = {
@@ -22,14 +24,11 @@ class Chunk(world: World, val index: Int) {
   @EventHandler
   def tick(event: TickEvent) {
 
-    if (world.activeChunk != this) return
   }
 
   @EventHandler
-  def paint(event: RepaintEvent) {
-
-    if (world.activeChunk != this) return
-
-    tiles.flatten.foreach(_.paint(event.graphics))
+  def paint(e: RepaintEvent) {
+    tiles.flatten.foreach(_.paint(e.graphics))
+    entities.foreach(_.paint(e))
   }
 }

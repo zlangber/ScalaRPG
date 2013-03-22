@@ -1,18 +1,21 @@
 package scalarpg.net.server
 
 import collection.mutable
-import java.io.File
 import java.rmi.server.UnicastRemoteObject
-import scala.xml.XML
-import scalarpg.eventbus.event.Event
+import scalarpg.eventbus.event.{PlayerConnectedEvent, PlayerDisconnectedEvent, NetworkEvent}
 import scalarpg.net.client.RMIClient
 import scalarpg.world.World
+import scalarpg.eventbus.EventBusService
 
 class RMIServerImpl extends UnicastRemoteObject with RMIServer {
 
   val clients = mutable.Buffer[RMIClient]()
 
   val world = new World()
+  world.load("level0")
+
+  ServerEventHandler.server = this
+  EventBusService.subscribe(ServerEventHandler)
 
   def connect(client: RMIClient): Boolean = {
 
@@ -23,7 +26,9 @@ class RMIServerImpl extends UnicastRemoteObject with RMIServer {
 
     println("Accepted connection from " + client.player.username)
     clients += client
-    world.players += client.player
+    val chunkIndex = 0
+    world.addEntity(client.player, chunkIndex)
+    sendEvent(new PlayerConnectedEvent(client.player, chunkIndex), client)
     true
   }
 
@@ -33,19 +38,23 @@ class RMIServerImpl extends UnicastRemoteObject with RMIServer {
 
     println(client.player.username + " disconnected")
     clients -= client
+    world.removeEntity(client.player)
+    sendEvent(new PlayerDisconnectedEvent(client.player), client)
   }
-
-  def sendEvent(client: RMIClient, e: Event[Any]) {
-    clients.view.filter(_ != client).foreach(_.handleEvent(e))
-  }
-
 
   def playerList: Seq[String] = {
     clients.map(_.player.username)
   }
 
-  def worldData: xml.Node = {
-    val file = new File("resources/levels/level0.xml")
-    XML.loadFile(file)
+  def handleEvent(e: Object) {
+    EventBusService.publish(e)
+  }
+
+  def sendEvent(e: NetworkEvent[Any], source: RMIClient) {
+    clients.filter(_ != source).foreach(_.handleEvent(e))
+  }
+
+  def sendEventToAll(e: NetworkEvent[Any]) {
+    clients.foreach(_.handleEvent(e))
   }
 }
