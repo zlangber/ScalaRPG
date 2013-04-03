@@ -2,43 +2,46 @@ package scalarpg
 
 import java.io.IOException
 import java.rmi.Naming
+import java.rmi.server.UnicastRemoteObject
 import javax.swing.Timer
 import scala.swing._
-import scalarpg.entity.Player
-import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
-import scalarpg.eventbus.{EventHandler, EventBusService}
 import scalarpg.gui.{GameFrame, GamePanel, IntroPanel}
-import scalarpg.net.client.{RMIClient, RMIClientImpl}
-import scalarpg.net.server.RMIServer
-import scalarpg.world.{Chunk, WorldClient}
+import scalarpg.render.{RenderStateImpl, RenderState}
+import scalarpg.rmi.client.RMIClient
+import scalarpg.rmi.server.RMIServer
 
-object Client {
+object Client extends UnicastRemoteObject with RMIClient {
 
-  var rmiClient: RMIClient = null
+  var server: RMIServer = null
+  var username = ""
 
-  val gamePanel = new GamePanel()
+  val timer = new Timer(50, Swing.ActionListener(e => tick()))
+  var renderState: RenderState = new RenderStateImpl()
+
+  val frame = new GameFrame()
   val introPanel = new IntroPanel()
-  val frame = new GameFrame(introPanel)
+  val gamePanel = new GamePanel
 
-  val timer = new Timer(50, Swing.ActionListener(e => EventBusService.publish(new TickEvent())))
-
-  def showTitleScreen() {
-    frame.contents = introPanel
+  def tick() {
+    renderState.tick()
+    gamePanel.repaint()
   }
 
-  def start() {
-    frame.contents = gamePanel
-    gamePanel.requestFocus()
-    timer.start()
+  override def updateRenderState(renderState: RenderState) {
+    this.renderState = renderState
   }
 
-  def connectToServer(host: String, username: String) {
+  def connect(host: String, username: String) {
 
+    this.username = username
     try {
       Naming.lookup("rmi://" + host + "/ScalaRPGServer") match {
         case server: RMIServer =>
-          rmiClient = new RMIClientImpl(new Player(username), server)
-          rmiClient.connect()
+          this.server = server
+          val (isSuccessful, message) = server.connect(this)
+          println(message)
+          if (isSuccessful)
+            start(server.getRenderState(this))
         case _ => println("Could not connect to server at " + host)
       }
     }
@@ -46,11 +49,28 @@ object Client {
       case e: IOException =>
         e.printStackTrace()
         Dialog.showMessage(null, "Error connecting to server " + host, "Failed to connect!", Dialog.Message.Error, null)
-        if (rmiClient != null) rmiClient.disconnect()
     }
+  }
+
+  def start(renderState: RenderState) {
+    this.renderState = renderState
+    frame.contents = gamePanel
+    gamePanel.requestFocus()
+    timer.start()
+  }
+
+  def stop() {
+    timer.stop()
+    showTitleScreen()
+  }
+
+  def showTitleScreen() {
+    frame.contents = introPanel
+    frame.repaint()
   }
 
   def main(args: Array[String]) {
     frame.open()
+    showTitleScreen()
   }
 }

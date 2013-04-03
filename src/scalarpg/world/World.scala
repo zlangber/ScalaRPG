@@ -3,12 +3,13 @@ package scalarpg.world
 import java.util.UUID
 import scala.collection.mutable
 import scala.xml.XML
-import scalarpg.entity.Entity
+import scalarpg.entity.{Player, Entity}
+import scalarpg.render._
 
-class World() extends Serializable {
+class World extends Serializable {
 
   val chunks = new Array[Chunk](4)
-  val playerChunkIndices = new mutable.HashMap[UUID, Int]()
+  val entityChunkMap = new mutable.HashMap[UUID, Int]()
 
   def getEntity(id: UUID):Entity = {
 
@@ -16,22 +17,33 @@ class World() extends Serializable {
     var entity: Entity = null
     chunks.foreach(chunk => {
       chunk.entities.foreach(e => {
-        count += 1
         if (e.id == id)
           entity = e
       })
     })
-    println(count)
     entity
   }
 
   def addEntity(entity: Entity, chunkIndex: Int) {
-    playerChunkIndices += entity.id -> chunkIndex
+    entityChunkMap += entity.id -> chunkIndex
     chunks(chunkIndex).entities += entity
   }
 
   def removeEntity(entity: Entity) {
-    chunks(playerChunkIndices(entity.id)).entities -= entity
+    chunks(entityChunkMap(entity.id)).entities -= entity
+  }
+
+  def getRenderStateFor(username: String): RenderState = {
+
+    val chunk = chunks(0)
+
+    val renderState = new RenderStateImpl()
+    renderState += new ChunkRenderer(chunk)
+    chunk.entities.foreach( _ match {
+      case p: Player => renderState += new PlayerRenderer(p)
+      case e: Entity => renderState += new EntityRenderer(e)
+    })
+    renderState
   }
 
   def load(level: String) {

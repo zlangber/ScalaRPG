@@ -1,10 +1,7 @@
 package scalarpg.entity
 
-import java.awt.Point
-import scalarpg.eventbus.EventHandler
-import scalarpg.eventbus.event.RepaintEvent
+import java.awt.{Graphics2D, Point}
 import scalarpg.util.Direction
-import swing.event.{Key, KeyPressed}
 
 class Player(val username: String) extends Entity {
 
@@ -35,11 +32,5 @@ class Player(val username: String) extends Entity {
       //EventBusService.publish(new PlayerLeftChunkEvent(this, direction))
       false
     } else super.canMoveTo(pos)
-  }
-
-  @EventHandler
-  override def paint(event: RepaintEvent) {
-    super.paint(event)
-    event.graphics.drawString(username, position.x, position.y - 5)
   }
 }

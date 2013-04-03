@@ -1,8 +1,7 @@
 package scalarpg.gui
 
-import swing.Panel
 import java.awt.{Font, Graphics2D, Dimension, Color}
-import swing.event.KeyPressed
+import swing.Panel
 
 class IntroPanel extends Panel {
 

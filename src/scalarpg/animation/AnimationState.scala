@@ -3,8 +3,6 @@ package scalarpg.animation
 import collection.immutable.HashMap
 import java.awt.image.BufferedImage
 import scalarpg.util.{TickCounter, Direction}
-import scalarpg.eventbus.{EventHandler, EventBusService}
-import scalarpg.eventbus.event.TickEvent
 
 class AnimationState(var spriteKey: String, delay: Int) extends Serializable {
 
@@ -23,8 +21,6 @@ class AnimationState(var spriteKey: String, delay: Int) extends Serializable {
       Direction.Up -> Array(24, 25, 26)
     )
   )
-
-  EventBusService.subscribe(this)
 
   def start(k: String, dir: Direction.Value) {
     isAnimating = true
@@ -46,8 +42,7 @@ class AnimationState(var spriteKey: String, delay: Int) extends Serializable {
     SpriteCache(spriteKey)(frameIndices(key)(direction)(index))
   }
 
-  @EventHandler
-  def tick(event: TickEvent) {
+  def tick() {
 
     if (!isAnimating) {
       index = 0

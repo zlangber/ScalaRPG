@@ -1,11 +1,9 @@
 package scalarpg.entity
 
-import java.awt.Point
+import java.awt.{Graphics2D, Point}
 import java.util.UUID
-import scalarpg.animation.AnimationState
-import scalarpg.eventbus.{EventBusService, EventHandler}
-import scalarpg.eventbus.event.{RepaintEvent, TickEvent}
 import scalarpg.util.{TickCounter, Direction}
+import scalarpg.animation.AnimationState
 
 abstract class Entity extends Serializable {
 
@@ -21,8 +19,6 @@ abstract class Entity extends Serializable {
   val moveCounter = new TickCounter()
 
   lazy val animationState = new AnimationState("missing", 2)
-
-  EventBusService.subscribe(this)
 
   def canMoveTo(pos: Point):Boolean = {
 
@@ -66,8 +62,7 @@ abstract class Entity extends Serializable {
     animationState.stop()
   }
 
-  @EventHandler
-  def tick(event: TickEvent) {
+  def tick() {
 
     if (dead) return
 
@@ -89,10 +84,5 @@ abstract class Entity extends Serializable {
       }
       moveCounter.tick()
     }
-  }
-
-  @EventHandler
-  def paint(event: RepaintEvent) {
-    event.graphics.drawImage(animationState.currentFrame, position.x, position.y, null)
   }
 }

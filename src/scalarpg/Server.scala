@@ -2,7 +2,7 @@ package scalarpg
 
 import java.rmi.Naming
 import java.rmi.registry.LocateRegistry
-import scalarpg.net.server.RMIServerImpl
+import scalarpg.rmi.server.RMIServerImpl
 
 object Server {
 
