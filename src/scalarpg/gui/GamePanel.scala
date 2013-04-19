@@ -12,11 +12,11 @@ class GamePanel extends Panel {
 
   listenTo(keys)
   reactions += {
-    case e: KeyPressed => if (Client.server != null) Client.server.handleEvent(e)
+    case e: KeyPressed => if (Client.rmiServer != null) Client.rmiServer.handleEvent(Client.rmiClient, e.key)
   }
 
   override def paint(g: Graphics2D) {
     super.paint(g)
-    Client.renderState.render(g)
+    Client.rmiClient.render(g)
   }
 }

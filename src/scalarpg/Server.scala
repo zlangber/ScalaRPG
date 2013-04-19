@@ -7,8 +7,8 @@ import scalarpg.rmi.server.RMIServerImpl
 object Server {
 
   val server = new RMIServerImpl()
-
   val startTime = System.nanoTime
+  var isServer = false
 
   def handleCommand(cmd: String) {
 
@@ -25,6 +25,7 @@ object Server {
     println("Starting ScalaRPG server...")
     LocateRegistry.createRegistry(1099)
     Naming.bind("ScalaRPGServer", server)
+    isServer = true
 
     while (true) {
       handleCommand(readLine())

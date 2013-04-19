@@ -6,7 +6,7 @@ import scalarpg.entity.Entity
 class Chunk(val index: Int) extends Serializable {
 
   lazy val tiles = Array.tabulate(16, 16)((x, y) => new Tile(this, x * 32, y * 32, defaultTexture))
-  var entities = mutable.Buffer[Entity]()
+  var entities = mutable.Set[Entity]()
 
   val spriteKey = "world"
   var defaultTexture = 0
@@ -19,5 +19,7 @@ class Chunk(val index: Int) extends Serializable {
     getTile(x / 32, y / 32)
   }
 
-  def tick() {}
+  def tick() {
+    entities.foreach(_.tick())
+  }
 }

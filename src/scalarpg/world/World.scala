@@ -5,17 +5,31 @@ import scala.collection.mutable
 import scala.xml.XML
 import scalarpg.entity.{Player, Entity}
 import scalarpg.render._
+import scalarpg.util.Direction
+import scalarpg.rmi.server.RMIServerImpl
 
-class World extends Serializable {
+class World(server: RMIServerImpl) extends Serializable {
 
-  val chunks = new Array[Chunk](4)
+  val chunks = Array.fill(2)(new Array[Chunk](2))
   val entityChunkMap = new mutable.HashMap[UUID, Int]()
 
-  def getEntity(id: UUID):Entity = {
+  def getPlayer(username: String): Player = {
+    var player: Player = null
+    chunks.flatten.foreach(chunk => {
+      chunk.entities.foreach(e => {
+        e match {
+          case p: Player => if (p.username == username) player = p
+          case _ =>
+        }
+      })
+    })
+    player
+  }
 
-    var count = 0
+  def getEntity(id: UUID): Entity = {
+
     var entity: Entity = null
-    chunks.foreach(chunk => {
+    chunks.flatten.foreach(chunk => {
       chunk.entities.foreach(e => {
         if (e.id == id)
           entity = e
@@ -25,25 +39,84 @@ class World extends Serializable {
   }
 
   def addEntity(entity: Entity, chunkIndex: Int) {
+
     entityChunkMap += entity.id -> chunkIndex
-    chunks(chunkIndex).entities += entity
+    getChunkFromIndex(chunkIndex).entities += entity
   }
 
   def removeEntity(entity: Entity) {
-    chunks(entityChunkMap(entity.id)).entities -= entity
+
+    val chunkIndex = entityChunkMap(entity.id)
+    getChunkFromIndex(chunkIndex).entities -= entity
+    entityChunkMap -= entity.id
+  }
+
+  def moveEntity(entity: Entity, direction: Direction.Value) {
+
+    val (row, column) = getChunkCoordsFromIndex(entityChunkMap(entity.id))
+    var newRow, newColumn = -1
+    direction match {
+      case Direction.Up => {
+        if (row - 1 > -1) {
+          newRow = row - 1
+          newColumn = column
+        }
+      }
+      case Direction.Down => {
+        if (row + 1 < chunks.length) {
+          newRow = row + 1
+          newColumn = column
+        }
+      }
+      case Direction.Left => {
+        if (column - 1 > -1) {
+          newRow = row
+          newColumn = column - 1
+        }
+      }
+      case Direction.Right => {
+        if (column + 1 < chunks(row).length) {
+          newRow = row
+          newColumn = column + 1
+        }
+      }
+    }
+
+    if (newRow > -1 && newColumn > -1) {
+      removeEntity(entity)
+      addEntity(entity, newRow * 2 + newColumn)
+      entity.reposition(direction)
+    }
   }
 
   def getRenderStateFor(username: String): RenderState = {
 
-    val chunk = chunks(0)
+    val player = getPlayer(username)
+    val (row, column) = getChunkCoordsFromIndex(entityChunkMap(player.id))
+    val chunk = chunks(row)(column)
 
     val renderState = new RenderStateImpl()
     renderState += new ChunkRenderer(chunk)
-    chunk.entities.foreach( _ match {
+    chunk.entities.foreach(_ match {
       case p: Player => renderState += new PlayerRenderer(p)
       case e: Entity => renderState += new EntityRenderer(e)
     })
     renderState
+  }
+
+  def forceRenderUpdate() {
+    server.needsRenderUpdate = true
+  }
+
+  def tick() {
+    chunks.flatten.foreach(_.tick())
+  }
+
+  def getChunkCoordsFromIndex(index: Int): (Int, Int) = index / 2 -> index % 2
+
+  def getChunkFromIndex(index: Int): Chunk = {
+    val (row, column) = getChunkCoordsFromIndex(index)
+    chunks(row)(column)
   }
 
   def load(level: String) {
@@ -52,8 +125,7 @@ class World extends Serializable {
 
     (worldData \ "chunk").toArray.zipWithIndex.foreach(data => {
 
-      val chunkXML = data._1
-      val index = data._2
+      val (chunkXML, index) = data
 
       val chunk = new Chunk(index)
       chunk.defaultTexture = (chunkXML \ "defaults" \ "@texture").text.toInt
@@ -75,7 +147,8 @@ class World extends Serializable {
         })
       })
 
-      chunks(index) = chunk
+      val (row, column) = getChunkCoordsFromIndex(index)
+      chunks(row)(column) = chunk
     })
   }
 }

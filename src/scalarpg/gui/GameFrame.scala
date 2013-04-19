@@ -39,5 +39,5 @@ class GameFrame extends MainFrame {
   resizable = false
   centerOnScreen()
 
-  def disconnect() = if (Client.server != null) Client.server.disconnect(Client)
+  def disconnect() = if (Client.rmiServer != null) Client.rmiServer.disconnect(Client.rmiClient)
 }

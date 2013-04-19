@@ -1,12 +1,14 @@
 package scalarpg.rmi.client
 
+import java.awt.Graphics2D
 import scalarpg.render.RenderState
-import scalarpg.rmi.server.RMIServer
 
 @remote
 trait RMIClient {
 
-  var username: String
+  val username: String
 
+  def render(g: Graphics2D)
+  def tick()
   def updateRenderState(renderState: RenderState)
 }

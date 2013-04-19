@@ -5,7 +5,9 @@ import scalarpg.entity.Entity
 
 class EntityRenderer(entity: Entity) extends Renderer {
 
-  def tick() {}
+  def tick() {
+    entity.tick()
+  }
 
   def render(g: Graphics2D) {
     g.drawImage(entity.animationState.currentFrame, entity.position.x, entity.position.y, null)
