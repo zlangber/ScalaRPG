@@ -16,7 +16,7 @@ class Mob(name: String, world: World) extends Entity(world) {
     if (!Server.isServer)
       return
 
-    if (aiCounter.count() > 32 && math.random > .5) {
+    if (aiCounter.count() > 32 && math.random > .2) {
       aiCounter.reset()
       move(Direction.random())
     }

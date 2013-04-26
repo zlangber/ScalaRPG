@@ -26,6 +26,6 @@ class IntroPanel extends Panel {
     g.setFont(new Font(g.getFont.getFontName, Font.PLAIN, 16))
     drawCenteredString("ScalaRPG", g, 0, 0)
     g.setFont(new Font(g.getFont.getFontName, Font.PLAIN, 12))
-    drawCenteredString("Something cool will be here, eventually...", g, 0, 20)
+    drawCenteredString("Something cool will be here eventually...", g, 0, 20)
   }
 }

@@ -15,7 +15,7 @@ object Server {
     cmd match {
       case "players" => println("Players:"); server.playerList.foreach(p => println("\t" + p))
       case "uptime" => println(((System.nanoTime - startTime) / 1e9).toInt + "s")
-      case "exit" => sys.exit()
+      case "stop" | "exit" => sys.exit()
       case _ => println("Unknown command")
     }
   }
